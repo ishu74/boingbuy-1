@@ -28,7 +28,7 @@ function NavBar() {
            
 
             {/* Disabled link for Orders */}
-            <Nav.Link href="#" disabled style={{ fontSize: '1rem', marginLeft: '1rem' }}>
+            <Nav.Link as={Link} to="/orders" style={{ fontSize: '1rem', marginLeft: '1rem' }}>
               Orders
             </Nav.Link>
           </Nav>

@@ -59,19 +59,52 @@ const removeFromCart = (id) => {
     }
   };
   
-  const updateCartQuantity = (id, quantity) => {
-    try {
-      const cart = fetchCart();
-      const productIndex = cart.findIndex(item => item.id === id);
-      if (productIndex >= 0) {
-        cart[productIndex].quantity = quantity; 
-        localStorage.setItem('cart', JSON.stringify(cart));
-      }
-      return cart; 
-    } catch (error) {
-      console.error('Error updating product quantity in cart', error);
+
+//   const updateCartQuantity = (id, quantity) => {
+//     try {
+//       const cart = fetchCart();
+//       const productIndex = cart.findIndex(item => item.id === id);
+//       if (productIndex >= 0) {
+//         cart[productIndex].quantity = quantity; 
+//         localStorage.setItem('cart', JSON.stringify(cart));
+//       }
+//       return cart; 
+//     } catch (error) {
+//       console.error('Error updating product quantity in cart', error);
+//     }
+//   };
+
+const updateCartQuantity = (id, quantity) => {
+  try {
+    // debugger
+    if (quantity < 0) {
+      console.error('Quantity cannot be negative.');
+      return null;
     }
-  };
+
+    const cart = fetchCart() || [];
+
+ 
+    const productIndex = cart.findIndex(item => item.id === id);
+
+    if (productIndex >= 0) {
+     
+      cart[productIndex].quantity = quantity;
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      return cart; 
+    } else {
+     
+      console.warn(`Product with id ${id} not found in the cart.`);
+      return cart; 
+    }
+  } catch (error) {
+    console.error('Error updating product quantity in cart:', error);
+    return null;
+  }
+};
+
   
   export default { fetchCart, addToCart, removeFromCart, deleteCart, updateCartQuantity };
   

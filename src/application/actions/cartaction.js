@@ -60,4 +60,6 @@ export const fetchCartSuccess = (cart) => ({
     type: UPDATE_CART_QUANTITY,
     payload: { id, quantity },
   });
+
+
   

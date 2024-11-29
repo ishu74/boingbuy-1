@@ -9,6 +9,8 @@ import Cart from './views/Pages/Cart';
 import { useEffect } from 'react';
 import { fetchCart, fetchCartSuccess } from './application/actions/cartaction';
 import { useDispatch } from 'react-redux';
+import Checkout from './views/Pages/Checkout';
+import OrderPage from './views/Pages/OrderPage';
 
 function App() {
 const dispatch = useDispatch()
@@ -26,6 +28,8 @@ const dispatch = useDispatch()
           <Route path="/products" element={<ProductListing />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart/>} />
+          <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/orders" element={<OrderPage/>} />
         </Routes>
       </Router>
     </div>

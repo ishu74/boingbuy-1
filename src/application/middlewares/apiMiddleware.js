@@ -3,7 +3,7 @@ import {
     REMOVE_FROM_CART, REMOVE_FROM_CART_SUCCESS, removeFromCartSuccess, 
     DELETE_CART, DELETE_CART_SUCCESS, deleteCartSuccess, 
     UPDATE_CART_QUANTITY, UPDATE_CART_QUANTITY_SUCCESS, updateCartQuantitySuccess, 
-    fetchCartSuccess
+    fetchCartSuccess,fetchCart
   } from "../actions/cartaction";
 //   import { setLoading } from "../actions/uiAction";
 //   import * as uiActions from '../actions/uiAction';
@@ -11,10 +11,8 @@ import {
   const fetchCartMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
     if (action.type === 'FETCH_CART') {
       try {
-        // dispatch(uiActions.setLoading(true)); 
         const cart = api.apiCart.fetchCart(); 
         dispatch(fetchCartSuccess(cart)); 
-        // dispatch(uiActions.setLoading(false)); 
       } catch (error) {
         console.log("Fetch Cart Error", error);
       }
@@ -60,17 +58,44 @@ import {
     next(action);
   };
   
-  const updateCartQuantityMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
+//   const updateCartQuantityMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
+//     if (action.type === UPDATE_CART_QUANTITY) {
+//       try {
+//         const updatedProduct = api.apiCart.updateCartQuantity(action.payload.id, action.payload.quantity); 
+//         dispatch(updateCartQuantitySuccess(updatedProduct)); 
+//       } catch (error) {
+//         console.log("Update Cart Quantity Error", error);
+//       }
+//     }
+//     next(action);
+//   };
+
+// middleware.js
+const updateCartQuantityMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
     if (action.type === UPDATE_CART_QUANTITY) {
       try {
-        const updatedProduct = api.apiCart.updateCartQuantity(action.payload.id, action.payload.quantity); 
-        dispatch(updateCartQuantitySuccess(updatedProduct)); 
+        const updatedProduct = api.apiCart.updateCartQuantity(action.payload.id, action.payload.quantity);
+  
+        // After updating the quantity, update localStorage as well
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const updatedCart = cart.map((product) =>
+          product.id === action.payload.id
+            ? { ...product, quantity: action.payload.quantity }
+            : product
+        );
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+  
+        // Dispatch to Redux store
+        dispatch(updateCartQuantitySuccess(updatedProduct));
+  
       } catch (error) {
         console.log("Update Cart Quantity Error", error);
       }
     }
+    
     next(action);
   };
+  
   
   export default [
     fetchCartMiddleware, 
