@@ -1,0 +1,126 @@
+/* General styling */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sidebar fixed on the left */
+.sidebar {
+  position: sticky;
+  top: 0; /* Keeps the sidebar at the top */
+  height: 100vh; /* Full height */
+  overflow-y: auto; /* Allows scrolling if content overflows */
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-right: 1px solid #ddd;
+}
+
+.filters {
+  margin-top: 10px;
+}
+
+.filters .form-group {
+  margin-bottom: 15px;
+}
+
+/* Product area - allowing scroll */
+.products {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the content inside products area */
+  width: 100%; /* Take full width of the container */
+}
+
+.category-title,
+.subcategory-title {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}
+
+.category-section {
+  margin-bottom: 30px;
+}
+
+.product-card {
+  margin-bottom: 20px;
+  width: 100%; /* Ensure card takes full width in its column */
+  height: 100%; /* Ensure card height is consistent */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-image {
+  height: 200px; /* Fixed height for product images */
+  object-fit: cover; /* Ensure images fill their container */
+}
+
+/* Sidebar styles for responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    margin-bottom: 20px;
+  }
+
+  /* Centering the product cards area */
+  .products .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the cards within the product area */
+  }
+
+  .products .col-6 {
+    flex: 1 1 calc(50% - 20px); /* 2 cards per row with equal left/right margin */
+    margin: 10px;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Larger screens (md and above), center cards with equal margin */
+  .products .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the cards within the product area */
+  }
+
+  .products .col-4 {
+    flex: 1 1 calc(33.333% - 20px); /* 3 cards per row with equal left/right margin */
+    margin: 10px;
+  }
+}

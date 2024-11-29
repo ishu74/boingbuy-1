@@ -1,0 +1,47 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { products } from '../../assets/product';
+
+const ProductDetail = () => {
+  const { id } = useParams(); // Extract ID from URL
+  const productId = parseInt(id, 10); // Convert ID to a number
+  let productDetail;
+
+  // Find the product by numeric ID
+  products.categories.forEach((category) => {
+    category.subcategories.forEach((subcategory) => {
+      const product = subcategory.products.find((product) => product.id === productId);
+      if (product) productDetail = product;
+    });
+  });
+
+  if (!productDetail) {
+    return <h2>Product not found!</h2>;
+  }
+
+  return (
+    <div className="product-detail">
+      <img src={productDetail.image} alt={productDetail.name} />
+      <h1>{productDetail.name}</h1>
+      <p>Price: ${productDetail.price}</p>
+      <p>Brand: {productDetail.brand}</p>
+    </div>
+  );
+};
+
+export default ProductDetail;
+
+
+
+//Search icon
+
+ {/* Search Filter */}
+          {/* <Form.Group controlId="searchQuery">
+            <Form.Label>Search</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Search products by name"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </Form.Group> */}
