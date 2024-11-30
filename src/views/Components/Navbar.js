@@ -8,10 +8,11 @@ import { Link } from 'react-router-dom';
 import { CiShoppingCart } from "react-icons/ci";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector } from 'react-redux';
+import { getCarts } from '../../application/selectors/cartSelector';
 
 function NavBar() {
 
-  const cart = useSelector((state) => state.cartReducer.cart);
+  const cart = useSelector(getCarts);
   const cartItemCount = cart.length;
   return (
     <Navbar expand="lg" className="bg-body-tertiary sticky-top shadow" style={{ padding: '0.5rem 1rem' }}>

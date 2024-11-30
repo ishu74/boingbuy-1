@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table, Button, Collapse } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null); 
-  const dispatch = useDispatch()
+
+
+  // const dispatch = useDispatch()
 
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem('orders')) || [];
@@ -30,7 +31,7 @@ const OrdersPage = () => {
     const toastId = toast(
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <span style={{ marginBottom: '10px' }}>
-          Are you sure you want to delete this order detail?
+          Are you sure you want to delete this order detail?_work in progress
         </span>
         <div>
           <Button

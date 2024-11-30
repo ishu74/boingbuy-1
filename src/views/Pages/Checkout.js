@@ -5,11 +5,14 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { clearCart } from '../../application/actions/cartaction';
 import { useNavigate } from 'react-router-dom';
+import { getCarts } from '../../application/selectors/cartSelector';
 
 const CheckoutPage = () => {
-  const cart = useSelector((state) => state.cartReducer.cart)
+  const cart = useSelector(getCarts)
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  
+  // Form data and error states
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
@@ -18,67 +21,170 @@ const CheckoutPage = () => {
     paymentMethod: 'Credit Card',
   });
 
+  const [errors, setErrors] = useState({
+    nameError: '',
+    contactError: '',
+    emailError: '',
+    addressError: '',
+  });
+
+ 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'name' && /[^a-zA-Z\s]/.test(value)) {
+      return  
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value, //e.target.value,
     });
+  
+    setErrors({
+      ...errors,
+      addressError:""
+    })
+    if (name === 'name') {
+      setErrors({
+        ...errors,
+        nameError: '', // Clear address error when user types in the 'name' field
+      });
+    }
+
+    if (name === 'email') {
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (emailRegex.test(value)) {
+        setErrors({
+          ...errors,
+          emailError: '' 
+        });
+      } else {
+        setErrors({
+          ...errors,
+          emailError: 'Email format is not proper.' 
+        });
+        
+      }
+    }
   };
 
+  const handleContactChange = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,10}$/.test(value)) {
+      setFormData({
+        ...formData,
+        contact: value,
+
+      });
+      setErrors({
+        ...errors,
+        contactError: ''
+      })
+    }else{
+      setErrors({
+        ...errors,
+        contactError: 'Please enter valid 10 digit phone number' 
+      });
+    }
+  };
+
+
+  // Calculate total price
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
   };
 
+  // Validate the form and submit the order
   const handleSubmit = (e) => {
     e.preventDefault();
-    // debugger
-    if (!cart.length) {
-      alert('Your cart is empty. Add items before checkout.');
-      return;
-    }
 
-    const order = {
-      id: Date.now(),
-      name: formData.name,
-      contact: formData.contact,
-      email: formData.email,
-      address: formData.address,
-      paymentMethod: formData.paymentMethod,
-      items: cart,
-      total: getTotalPrice(),
-      date: new Date().toLocaleString(),
+    // Form validation
+    let valid = true;
+    let newErrors = {
+      nameError: '',
+      contactError: '',
+      emailError: '',
+      addressError: ''
     };
 
-    const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
-    localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
-    navigate("/orders")
+    if (!formData.name) {
+      newErrors.nameError = 'Please enter your name.';
+      valid = false;
+    }
 
-    toast.success(
-      <div>
-        <strong>Order Confirmed!</strong>
-        <p>Name: {formData.name}</p>
-        <p>Total: ${getTotalPrice()}</p>
-      </div>,
-      {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+    // if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
+    //   newErrors.contactError = 'Please enter a valid 10-digit contact number.';
+    //   valid = false;
+    // }
+
+    if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
+      newErrors.contactError = 'Please enter a valid 10-digit contact number.';
+      valid = false;
+    }
+
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.emailError = 'Please enter a valid email address.';
+      valid = false;
+    }
+
+    if (!formData.address) {
+      newErrors.addressError = 'Please enter your shipping address.';
+      valid = false;
+    }
+
+    setErrors(newErrors);
+
+    // If valid, proceed with order submission
+    if (valid) {
+      if (!cart.length) {
+        alert('Your cart is empty. Add items before checkout.');
+        return;
       }
-    );
 
-    dispatch(clearCart());
-    setFormData({
-      name: '',
-      contact: '',
-      email: '',
-      address: '',
-      paymentMethod: 'Credit Card',
-    });
-    navigate("/orders")
+      const order = {
+        id: Date.now(),
+        name: formData.name,
+        contact: formData.contact,
+        email: formData.email,
+        address: formData.address,
+        paymentMethod: formData.paymentMethod,
+        items: cart,
+        total: getTotalPrice(),
+        date: new Date().toLocaleString(),
+      };
+
+      const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
+      localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
+      navigate("/orders")
+
+      toast.success(
+        <div>
+          <strong>Order Confirmed!</strong>
+          <p>Name: {formData.name}</p>
+          <p>Total: ${getTotalPrice()}</p>
+        </div>,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+
+      dispatch(clearCart());
+      setFormData({
+        name: '',
+        contact: '',
+        email: '',
+        address: '',
+        paymentMethod: 'Credit Card',
+      });
+      navigate("/orders")
+    }
   };
 
   return (
@@ -101,8 +207,9 @@ const CheckoutPage = () => {
                         placeholder="Enter your name"
                         value={formData.name}
                         onChange={handleChange}
-                        required
+                        isInvalid={!!errors.nameError}
                       />
+                      {errors.nameError && <Form.Control.Feedback type="invalid">{errors.nameError}</Form.Control.Feedback>}
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -113,9 +220,10 @@ const CheckoutPage = () => {
                         name="contact"
                         placeholder="Enter your contact number"
                         value={formData.contact}
-                        onChange={handleChange}
-                        required
+                        onChange={handleContactChange}
+                        isInvalid={!!errors.contactError}
                       />
+                      {errors.contactError && <Form.Control.Feedback type="invalid">{errors.contactError}</Form.Control.Feedback>}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -128,8 +236,9 @@ const CheckoutPage = () => {
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
+                    isInvalid={!!errors.emailError}
                   />
+                  {errors.emailError && <Form.Control.Feedback type="invalid">{errors.emailError}</Form.Control.Feedback>}
                 </Form.Group>
 
                 <Form.Group controlId="formAddress" className="mb-3">
@@ -141,8 +250,9 @@ const CheckoutPage = () => {
                     rows={3}
                     value={formData.address}
                     onChange={handleChange}
-                    required
+                    isInvalid={!!errors.addressError}
                   />
+                  {errors.addressError && <Form.Control.Feedback type="invalid">{errors.addressError}</Form.Control.Feedback>}
                 </Form.Group>
 
                 <Form.Group controlId="formPaymentMethod" className="mb-3">

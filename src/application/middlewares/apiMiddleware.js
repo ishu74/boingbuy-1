@@ -9,11 +9,18 @@ import {
   clearCartSuccess
 } from "../actions/cartaction";
 
+// import { setLoading } from "../actions/uiAction";
+import * as uiActions from '../actions/uiAction'
+
 const fetchCartMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
   if (action.type === 'FETCH_CART') {
+    debugger
     try {
+      debugger
+      dispatch(uiActions.setLoading(true))
       const cart = api.apiCart.fetchCart();
       dispatch(fetchCartSuccess(cart));
+      dispatch(uiActions.setLoading(false))
     } catch (error) {
       console.log("Fetch Cart Error", error);
     }

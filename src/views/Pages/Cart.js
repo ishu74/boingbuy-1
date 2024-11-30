@@ -3,9 +3,13 @@ import { Button, Row, Col, Card, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCart, removeFromCart, updateCartQuantity, updateCartQuantitySuccess } from '../../application/actions/cartaction';
 import { Link } from 'react-router-dom';
+import { getCarts } from '../../application/selectors/cartSelector';
+import { getLoadingState } from '../../application/selectors/uiReducer';
+import { ShimmerContentBlock } from 'shimmer-effects-react';
 
 const Cart = () => {
-    const cart = useSelector((state) => state.cartReducer.cart);
+    const cart = useSelector(getCarts);
+    const loading = useSelector(getLoadingState);
     const dispatch = useDispatch();
 
 
@@ -52,9 +56,9 @@ const Cart = () => {
                 <Row>
                     {/* Cart Items (Left Side) */}
                     <Col md={8}>
-                        {cart.map((item,id) => (
+                        {cart.map((item, id) => (
                             // <Link to={`/products/:${item.id}`}>
-                            
+
                             <Card className="mb-3" key={item.id}>
                                 <Card.Body className="d-flex">
                                     <img
@@ -93,6 +97,7 @@ const Cart = () => {
                                     </Button>
                                 </Card.Body>
                             </Card>
+
                             // </Link>
                         ))}
                     </Col>

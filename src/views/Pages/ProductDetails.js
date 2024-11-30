@@ -5,12 +5,13 @@ import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../application/actions/cartaction';
 import { toast } from 'react-toastify';
+import { getCarts } from '../../application/selectors/cartSelector';
 // import { addToCart } from '../../actions/cartActions'; // Make sure this action is correctly imported
 
 const ProductDetails = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
-    const carts = useSelector((state) => state.cartReducer.cart);
+    const carts = useSelector(getCarts);
     const productId = parseInt(id, 10);
     const [isAddedToCart, setIsAddedToCart] = useState(false);
     const navigate = useNavigate()
