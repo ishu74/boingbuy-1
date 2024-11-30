@@ -115,7 +115,7 @@ const ProductListing = () => {
             />
           </Form.Group>
 
-          Sorting Filter
+          {/* Sorting Filter */}
           <Form.Group controlId="sortOrder">
             <Form.Label>Sort by Price</Form.Label>
             <Form.Control
