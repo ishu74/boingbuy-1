@@ -14,7 +14,7 @@ import * as uiActions from '../actions/uiAction'
 
 const fetchCartMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
   if (action.type === 'FETCH_CART') {
-    debugger
+    // debugger
     try {
       debugger
       dispatch(uiActions.setLoading(true))

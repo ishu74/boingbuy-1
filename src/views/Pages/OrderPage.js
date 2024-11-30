@@ -11,26 +11,29 @@ const OrdersPage = () => {
   const [openOrder, setOpenOrder] = useState(null);
   const loading = useSelector(getLoadingState);
 
+  // Fetch orders from localStorage when the component mounts
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem('orders')) || [];
     setOrders(savedOrders);
   }, []);
 
+  // Toggle order details (collapse)
   const handleToggle = (orderId) => {
     setOpenOrder(openOrder === orderId ? null : orderId);
   };
 
+  // Confirm delete action through toast
   const handleDeleteOrder = (orderId) => {
     const toastId = toast(
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <span style={{ marginBottom: '10px' }}>Are you sure you want to delete this order detail?</span>
+        <span style={{ marginBottom: '10px' }}>Are you sure you want to delete this order?</span>
         <div>
           <Button
             variant="danger"
             size="sm"
             onClick={() => {
-              deleteOrder(orderId);
-              toast.dismiss(toastId);
+              deleteOrder(orderId); // Call delete function
+              toast.dismiss(toastId); // Dismiss the toast
             }}
             style={{ marginRight: '10px' }}
           >
@@ -51,18 +54,19 @@ const OrdersPage = () => {
     );
   };
 
+  // Delete order and update state and localStorage
   const deleteOrder = (orderId) => {
     const updatedOrders = orders.filter((order) => order.id !== orderId);
-    setOrders(updatedOrders);
-    localStorage.setItem('orders', JSON.stringify(updatedOrders));
-    toast.success('Order detail has been successfully deleted!');
+    setOrders(updatedOrders); // Update state
+    localStorage.setItem('orders', JSON.stringify(updatedOrders)); // Update localStorage
+    toast.success('Order successfully deleted!');
   };
 
   return (
     <Container style={{ backgroundColor: '#f2f2f2', padding: '20px', borderRadius: '8px' }} className="mt-5">
       <h1 className="text-center mb-4" style={{ color: '#6f4f37' }}>Your Orders</h1>
       {loading ? (
-        // Shimmer effect during loading state
+        // Shimmer effect during loading
         <ShimmerTable
           mode="light"
           row={5}
@@ -120,7 +124,7 @@ const OrdersPage = () => {
                   </td>
                   <td>${order.total}</td>
                   <td>
-                    <Button
+                    {/* <Button
                       variant="danger"
                       onClick={() => handleDeleteOrder(order.id)}
                       style={{
@@ -131,7 +135,7 @@ const OrdersPage = () => {
                       }}
                     >
                       Delete
-                    </Button>
+                    </Button> */} WIP....
                   </td>
                 </tr>
                 <tr>

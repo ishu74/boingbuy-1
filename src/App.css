@@ -124,3 +124,39 @@
     margin: 10px;
   }
 }
+
+
+/* //amir bhai code */
+/* .placeholder-glow {
+  .placeholder {
+      opacity: 0.1;
+      animation: placeholder-glow 0.75s ease-in-out infinite;
+  }
+}
+  
+*/
+
+
+.placeholder-glow {
+  .placeholder {
+    display: inline-block;
+    width: 100px; /* Set desired width */
+    height: 150px; /* Set desired height */
+    margin: 10px; /* Optional spacing between placeholders */
+    border-radius: 8px; /* Makes the box slightly rounded */
+    opacity: 0.1;
+    animation: placeholder-glow 0.75s ease-in-out infinite;
+  }
+}
+
+@keyframes placeholder-glow {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}

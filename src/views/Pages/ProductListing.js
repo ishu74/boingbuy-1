@@ -3,13 +3,16 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import Cards from "../Components/Cards";
 import { products } from "../../assets/product";
 import "../../App.css";
+import { ShimmerPostList } from "react-shimmer-effects";
+import CardShimmerLoader from "../_common/shimmer-card";
+// import { ShimmerPostList } from "shimmer-effects-react";
 
 const ProductListing = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [subcategoryFilter, setSubcategoryFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-
+  const [loading, setLoading] = useState(false); // Loading state
 
   const handleCategoryChange = (e) => {
     setCategoryFilter(e.target.value);
@@ -59,6 +62,12 @@ const ProductListing = () => {
     return { ...category, subcategories };
   });
 
+  // Simulate loading behavior
+  useState(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1500); // Simulates a 1.5s data fetch
+  }, []);
+
   return (
     <Container fluid className="listing-page">
       <Row>
@@ -82,7 +91,6 @@ const ProductListing = () => {
             </Form.Control>
           </Form.Group>
 
-
           {/* Subcategory Filter */}
           {categoryFilter && (
             <Form.Group controlId="subcategoryFilter">
@@ -104,8 +112,8 @@ const ProductListing = () => {
             </Form.Group>
           )}
 
-          {/* Search Filter */} 
-        <Form.Group controlId="searchQuery">
+          {/* Search Filter */}
+          <Form.Group controlId="searchQuery">
             <Form.Label>Search</Form.Label>
             <Form.Control
               type="text"
@@ -130,25 +138,33 @@ const ProductListing = () => {
           </Form.Group>
         </Col>
 
-        <Col xs={12} md={8} lg={9} className="products">
-          {/* Render filtered categories and products */}
-          {finalFilteredData.map((category) => (
-            <div key={category.name } className="category-section">
-              <h2 className="category-title">{category.name}</h2>
-              {category.subcategories.map((subcategory) => (
-                <div key={subcategory.name} className="subcategory-section">
-                  <h3 className="subcategory-title">{subcategory.name}</h3>
-                  <Row>
-                    {subcategory.products.map((product, index) => (
-                      <Col key={index} xs={6} sm={6} md={6} lg={6}>
-                        <Cards product={product} />
-                      </Col>
-                    ))}
-                  </Row>
+        <Col xs={12} md={8} lg={9} className="products justify-content-around">
+          {/* Display Shimmer Effect or Products */}
+          {!loading ? (
+              finalFilteredData.map((category) => (
+                <div key={category.name} className="category-section">
+                  <h2 className="category-title">{category.name}</h2>
+                  {category.subcategories.map((subcategory) => (
+                    <div key={subcategory.name} className="subcategory-section">
+                      <h3 className="subcategory-title">{subcategory.name}</h3>
+                      <Row>
+                        {subcategory.products.map((product, index) => (
+                          <Col key={index} xs={6} sm={6} md={6} lg={6}>
+                            <Cards product={product} />
+                          </Col>
+                        ))}
+                      </Row>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ))}
+              ))
+          ) : (
+            <>
+            {/* <ShimmerPostList postStyle="STYLE_FOUR" col={2} row={2} gap={40} style={{display :"flex"}} /> */}
+            <CardShimmerLoader columnCount={2} rowCount={2} />
+ 
+            </>
+          )}
         </Col>
       </Row>
     </Container>

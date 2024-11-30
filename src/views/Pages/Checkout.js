@@ -29,46 +29,93 @@ const CheckoutPage = () => {
   });
 
  
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === 'name' && /[^a-zA-Z\s]/.test(value)) {
+  //     return  
+  //   }
+
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value, //e.target.value,
+  //   });
+  
+  //   setErrors({
+  //     ...errors,
+  //     addressError:""
+  //   })
+  //   if (name === 'name') {
+  //     setErrors({
+  //       ...errors,
+  //       nameError: '', // Clear address error when user types in the 'name' field
+  //     });
+  //   }
+
+  //   if (name === 'email') {
+  //     // const emailRegex = /\S+@\S+\.\S+/;
+  //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //     if (emailRegex.test(value)) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: '' 
+  //       });
+  //     } else {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Email format is not proper.' 
+  //       });
+        
+  //     }
+  //   }
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+  
     if (name === 'name' && /[^a-zA-Z\s]/.test(value)) {
-      return  
+      return;
     }
-
+  
     setFormData({
       ...formData,
-      [name]: value, //e.target.value,
+      [name]: value,
     });
   
     setErrors({
       ...errors,
-      addressError:""
-    })
+      addressError: "",
+    });
+  
     if (name === 'name') {
       setErrors({
         ...errors,
-        nameError: '', // Clear address error when user types in the 'name' field
+        nameError: '', // Clear name error when user types in the 'name' field
       });
     }
-
+  
     if (name === 'email') {
-      const emailRegex = /\S+@\S+\.\S+/;
-      if (emailRegex.test(value)) {
+      // Updated email validation regex: Only one dot allowed after @
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z0-9-.]+$/;
+      const afterAt = value.split('@')[1];
+      const dotCountAfterAt = afterAt ? afterAt.split('.').length - 1 : 0;
+  
+      // Check if there's more than one dot after '@'
+      if (emailRegex.test(value) && dotCountAfterAt <= 1) {
         setErrors({
           ...errors,
-          emailError: '' 
+          emailError: '', // Clear email error if valid
         });
       } else {
         setErrors({
           ...errors,
-          emailError: 'Email format is not proper.' 
+          emailError: 'Email format is not proper. Only one dot is allowed after "@"',
         });
-        
       }
     }
   };
-
+  
+  
   const handleContactChange = (e) => {
     const value = e.target.value;
     if (/^\d{0,10}$/.test(value)) {
@@ -123,10 +170,15 @@ const CheckoutPage = () => {
       valid = false;
     }
 
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+    // if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+    //   newErrors.emailError = 'Please enter a valid email address.';
+    //   valid = false;
+    // }
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.emailError = 'Please enter a valid email address.';
       valid = false;
     }
+    
 
     if (!formData.address) {
       newErrors.addressError = 'Please enter your shipping address.';
