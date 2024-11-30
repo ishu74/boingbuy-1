@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { clearCart } from '../../application/actions/cartaction';
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const cart = useSelector((state) => state.cartReducer.cart)
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
@@ -29,11 +31,27 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    // debugger
     if (!cart.length) {
       alert('Your cart is empty. Add items before checkout.');
       return;
     }
+
+    const order = {
+      id: Date.now(),
+      name: formData.name,
+      contact: formData.contact,
+      email: formData.email,
+      address: formData.address,
+      paymentMethod: formData.paymentMethod,
+      items: cart,
+      total: getTotalPrice(),
+      date: new Date().toLocaleString(),
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
+    localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
+    navigate("/orders")
 
     toast.success(
       <div>
@@ -52,7 +70,7 @@ const CheckoutPage = () => {
       }
     );
 
-    dispatch({ type: 'CLEAR_CART' });
+    dispatch(clearCart());
     setFormData({
       name: '',
       contact: '',
@@ -60,6 +78,7 @@ const CheckoutPage = () => {
       address: '',
       paymentMethod: 'Credit Card',
     });
+    navigate("/orders")
   };
 
   return (

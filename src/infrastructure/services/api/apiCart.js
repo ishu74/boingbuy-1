@@ -42,9 +42,9 @@ const fetchCart = () => {
 const removeFromCart = (id) => {
     try {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const updatedCart = cart.filter(item => item.id !== id); // Filter out the product to be removed
-      localStorage.setItem('cart', JSON.stringify(updatedCart)); // Save the updated cart back to localStorage
-      return updatedCart; // Return the updated cart
+      const updatedCart = cart.filter(item => item.id !== id);
+      localStorage.setItem('cart', JSON.stringify(updatedCart)); 
+      return updatedCart;
     } catch (error) {
       console.error('Error removing product from cart in localStorage:', error);
     }
@@ -105,6 +105,16 @@ const updateCartQuantity = (id, quantity) => {
   }
 };
 
+const clearCart = () => {
+  try {
+    localStorage.removeItem('cart'); 
+    return [];
+  } catch (error) {
+    console.error('Error clearing cart', error);
+  }
+};
+
+
   
-  export default { fetchCart, addToCart, removeFromCart, deleteCart, updateCartQuantity };
+  export default { fetchCart, addToCart, removeFromCart, deleteCart, updateCartQuantity,clearCart };
   

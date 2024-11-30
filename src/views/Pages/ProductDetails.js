@@ -2,19 +2,21 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { products } from '../../assets/product';
 import { Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../application/actions/cartaction';
+import { toast } from 'react-toastify';
 // import { addToCart } from '../../actions/cartActions'; // Make sure this action is correctly imported
 
 const ProductDetails = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
+    const carts = useSelector((state) => state.cartReducer.cart);
     const productId = parseInt(id, 10);
     let productDetail;
 
     products.categories.forEach(category => {
         category.subcategories.forEach(subcategory => {
-            const product = subcategory.products.find(product => product.id === productId);
+            const product = subcategory.products.find((product) => product.id === productId);
             if (product) productDetail = product;
         });
     });
@@ -23,12 +25,34 @@ const ProductDetails = () => {
         return <h2>Product not found!</h2>;
     }
 
-
-
     const handleAddToCart = () => {
-        // debugger
-        dispatch(addToCart(productDetail));
-        alert(`${productDetail.name} has been added to the cart.`);
+        const isProductInCart = carts.some((item) => item.id === productDetail.id);
+
+        if (isProductInCart) {
+
+            toast.info('Product is already in the cart!', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } else {
+
+            dispatch(addToCart(productDetail));
+            toast.success('Product added to cart!', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+
     };
 
     return (
@@ -37,7 +61,12 @@ const ProductDetails = () => {
             <h1>{productDetail.name}</h1>
             <p>Price: ${productDetail.price}</p>
             <p>Brand: {productDetail.brand}</p>
-            <p>{productDetail.description}</p> {/* You can use productDetail.description if available */}
+            <p>Velit mollit eu incididunt incididunt irure reprehenderit. Nulla incididunt quis proident est
+                occaecat sunt adipisicing. Non tempor officia pariatur magna aliqua quis fugiat Lorem amet
+                non in quis ad. Lorem eiusmod voluptate cillum eu culpa. Laborum ea do Lorem ea qui eiusmod
+                excepteur enim exercitation laboris. Culpa velit consequat dolor elit do nostrud laborum est
+                aliquip est reprehenderit ipsum dolore. Qui sint aliqua duis esse.
+            </p>
 
             <Button className="btn btn-success" onClick={handleAddToCart}>
                 Add to Cart

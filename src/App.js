@@ -11,6 +11,7 @@ import { fetchCart, fetchCartSuccess } from './application/actions/cartaction';
 import { useDispatch } from 'react-redux';
 import Checkout from './views/Pages/Checkout';
 import OrderPage from './views/Pages/OrderPage';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 const dispatch = useDispatch()
@@ -24,8 +25,10 @@ const dispatch = useDispatch()
     <div className="App">
       <Router>
         <NavBar />
+        <ToastContainer />
         <Routes>
           <Route path="/products" element={<ProductListing />} />
+          <Route path="/" element={<ProductListing />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/checkout" element={<Checkout/>} />

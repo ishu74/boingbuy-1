@@ -8,58 +8,66 @@ export const ADD_TO_CART_SUCCESS = "ADD_TO_CART_SUCCESS";
 export const REMOVE_FROM_CART_SUCCESS = "REMOVE_FROM_CART_SUCCESS";
 export const DELETE_CART_SUCCESS = "DELETE_CART_SUCCESS";
 export const UPDATE_CART_QUANTITY_SUCCESS = "UPDATE_CART_QUANTITY_SUCCESS";
+export const CLEAR_CART = "CLEAR_CART"
+export const CLEAR_CART_SUCCESS = "CLEAR_CART_SUCCESS"
 
 
 
 
 export const fetchCartSuccess = (cart) => ({
-    type: FETCH_CART_SUCCESS,
-    payload: cart,
-  });
-  
-  export const addToCartSuccess = (product) => ({
-    type: ADD_TO_CART_SUCCESS,
-    payload: product,
-  });
-  
-  export const removeFromCartSuccess = (id) => ({
-    type: REMOVE_FROM_CART_SUCCESS,
-    payload: id,
-  });
-  
-  export const deleteCartSuccess = () => ({
-    type: DELETE_CART_SUCCESS,
-  });
-  
-  export const updateCartQuantitySuccess = (updatedProduct) => ({
-    type: UPDATE_CART_QUANTITY_SUCCESS,
-    payload: updatedProduct,
-  });
-  
-  
-  export const fetchCart = () => ({
-    type: FETCH_CART,
-    // payload: JSON.parse(localStorage.getItem('cart')) || [],
-  });
-  
-  export const addToCart = (product) => ({
-    type: ADD_TO_CART,
-    payload: product,
-  });
-  
-  export const removeFromCart = (id) => ({
-    type: REMOVE_FROM_CART,
-    payload: id,
-  });
-  
-  export const deleteCart = () => ({
-    type: DELETE_CART,
-  });
-  
-  export const updateCartQuantity = (id, quantity) => ({
-    type: UPDATE_CART_QUANTITY,
-    payload: { id, quantity },
-  });
+  type: FETCH_CART_SUCCESS,
+  payload: cart,
+});
+
+export const addToCartSuccess = (product) => ({
+  type: ADD_TO_CART_SUCCESS,
+  payload: product,
+});
+
+export const removeFromCartSuccess = (id) => ({
+  type: REMOVE_FROM_CART_SUCCESS,
+  payload: id,
+});
+
+export const deleteCartSuccess = () => ({
+  type: DELETE_CART_SUCCESS,
+});
+
+export const updateCartQuantitySuccess = (updatedProduct) => ({
+  type: UPDATE_CART_QUANTITY_SUCCESS,
+  payload: updatedProduct,
+});
 
 
-  
+export const fetchCart = () => ({
+  type: FETCH_CART,
+});
+
+export const addToCart = (product) => ({
+  type: ADD_TO_CART,
+  payload: product,
+});
+
+export const removeFromCart = (id) => ({
+  type: REMOVE_FROM_CART,
+  payload: id,
+});
+
+export const deleteCart = () => ({
+  type: DELETE_CART,
+});
+
+export const clearCart =()=>({
+  type:CLEAR_CART
+})
+export const clearCartSuccess =(cart)=>({
+  type:CLEAR_CART_SUCCESS,
+  payload:cart
+})
+
+export const updateCartQuantity = (id, quantity) => ({
+  type: UPDATE_CART_QUANTITY,
+  payload: { id, quantity },
+});
+
+

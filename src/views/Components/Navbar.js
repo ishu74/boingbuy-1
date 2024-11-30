@@ -43,7 +43,6 @@ function NavBar() {
           <Nav.Link as={Link} to="/cart" style={{ fontSize: '1rem', marginLeft: '1rem' }}>
           <CiShoppingCart style={{ fontSize: '1.5rem', marginRight: '1rem' }} />
             </Nav.Link>
-          
           </div> */}
 
           <div className="d-flex align-items-center" style={{ marginLeft: 'auto' }}>

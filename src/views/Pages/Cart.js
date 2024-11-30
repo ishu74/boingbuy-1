@@ -52,7 +52,9 @@ const Cart = () => {
                 <Row>
                     {/* Cart Items (Left Side) */}
                     <Col md={8}>
-                        {cart.map((item) => (
+                        {cart.map((item,id) => (
+                            // <Link to={`/products/:${item.id}`}>
+                            
                             <Card className="mb-3" key={item.id}>
                                 <Card.Body className="d-flex">
                                     <img
@@ -91,6 +93,7 @@ const Cart = () => {
                                     </Button>
                                 </Card.Body>
                             </Card>
+                            // </Link>
                         ))}
                     </Col>
 
