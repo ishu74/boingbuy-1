@@ -1,91 +1,80 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table, Button, Collapse } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { ShimmerTable } from 'shimmer-effects-react';
 import 'react-toastify/dist/ReactToastify.css';
+import { getLoadingState } from '../../application/selectors/uiReducer';
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
-  const [openOrder, setOpenOrder] = useState(null); 
-
-
-  // const dispatch = useDispatch()
+  const [openOrder, setOpenOrder] = useState(null);
+  const loading = useSelector(getLoadingState);
 
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem('orders')) || [];
     setOrders(savedOrders);
-
   }, []);
 
   const handleToggle = (orderId) => {
     setOpenOrder(openOrder === orderId ? null : orderId);
   };
 
-  // const handleDeleteOrder = (orderId) => {
-  //   const updatedOrders = orders.filter((order) => order.id !== orderId);
-  //   setOrders(updatedOrders);
-  //   localStorage.setItem('orders', JSON.stringify(updatedOrders));
-
-  //   toast.success('Order has been successfully deleted!');
-  // };
   const handleDeleteOrder = (orderId) => {
     const toastId = toast(
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <span style={{ marginBottom: '10px' }}>
-          Are you sure you want to delete this order detail?_work in progress
-        </span>
+        <span style={{ marginBottom: '10px' }}>Are you sure you want to delete this order detail?</span>
         <div>
           <Button
             variant="danger"
             size="sm"
             onClick={() => {
               deleteOrder(orderId);
-              toast.dismiss(toastId); 
+              toast.dismiss(toastId);
             }}
-            style={{
-              marginRight: '10px',
-              backgroundColor: '#d9534f',
-              color: 'white',
-              border: 'none',
-              marginBottom: '5px', 
-            }}
+            style={{ marginRight: '10px' }}
           >
             Confirm
           </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => {
-              toast.dismiss(toastId); 
-              // toast.info('Order deletion was cancelled.');
-            }}
-            style={{ backgroundColor: '#6c757d', color: 'white', border: 'none' }}
-          >
+          <Button variant="secondary" size="sm" onClick={() => toast.dismiss(toastId)}>
             Cancel
           </Button>
         </div>
       </div>,
       {
-        position: "top-right",
-        autoClose: false, 
+        position: 'top-right',
+        autoClose: false,
         closeOnClick: false,
         draggable: false,
         progress: undefined,
       }
-    )
+    );
   };
 
   const deleteOrder = (orderId) => {
     const updatedOrders = orders.filter((order) => order.id !== orderId);
     setOrders(updatedOrders);
     localStorage.setItem('orders', JSON.stringify(updatedOrders));
-
     toast.success('Order detail has been successfully deleted!');
   };
 
   return (
     <Container style={{ backgroundColor: '#f2f2f2', padding: '20px', borderRadius: '8px' }} className="mt-5">
       <h1 className="text-center mb-4" style={{ color: '#6f4f37' }}>Your Orders</h1>
-      {orders.length === 0 ? (
+      {loading ? (
+        // Shimmer effect during loading state
+        <ShimmerTable
+          mode="light"
+          row={5}
+          col={10}
+          border={1}
+          borderColor="#F0F0F0"
+          rounded={0.25}
+          rowGap={15}
+          colGap={10}
+          colPadding={[10, 15, 10, 15]}
+        />
+      ) : orders.length === 0 ? (
         <p className="text-center" style={{ color: '#6f4f37' }}>No orders have been placed yet.</p>
       ) : (
         <Table responsive="sm" striped bordered hover style={{ backgroundColor: '#fff', borderRadius: '8px' }}>
@@ -130,7 +119,6 @@ const OrdersPage = () => {
                     </Button>
                   </td>
                   <td>${order.total}</td>
-
                   <td>
                     <Button
                       variant="danger"
@@ -146,7 +134,6 @@ const OrdersPage = () => {
                     </Button>
                   </td>
                 </tr>
-
                 <tr>
                   <td colSpan="10" style={{ padding: '0' }}>
                     <Collapse in={openOrder === order.id}>
