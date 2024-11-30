@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { products } from '../../assets/product';
 import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,8 @@ const ProductDetails = () => {
     const { id } = useParams();
     const carts = useSelector((state) => state.cartReducer.cart);
     const productId = parseInt(id, 10);
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
+    const navigate = useNavigate()
     let productDetail;
 
     products.categories.forEach(category => {
@@ -29,6 +31,7 @@ const ProductDetails = () => {
         const isProductInCart = carts.some((item) => item.id === productDetail.id);
 
         if (isProductInCart) {
+            // setIsAddedToCart(false);
 
             toast.info('Product is already in the cart!', {
                 position: 'top-right',
@@ -42,6 +45,7 @@ const ProductDetails = () => {
         } else {
 
             dispatch(addToCart(productDetail));
+            setIsAddedToCart(true);
             toast.success('Product added to cart!', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -55,6 +59,10 @@ const ProductDetails = () => {
 
     };
 
+
+    const handleGoToCart = () => {
+        navigate('/cart'); // Navigate to the cart page
+    };
     return (
         <div className="product-detail">
             <img src={productDetail.image} alt={productDetail.name} />
@@ -68,11 +76,22 @@ const ProductDetails = () => {
                 aliquip est reprehenderit ipsum dolore. Qui sint aliqua duis esse.
             </p>
 
-            <Button className="btn btn-success" onClick={handleAddToCart}>
+            {/* <Button className="btn btn-success" onClick={handleAddToCart}>
                 Add to Cart
-            </Button>
+            </Button> */}
+
+            {!isAddedToCart ? (
+                <Button className="btn btn-success" onClick={handleAddToCart}>
+                    Add to Cart
+                </Button>
+            ) : (
+                <Button className="btn btn-primary" onClick={handleGoToCart}>
+                    Go to Cart
+                </Button>
+            )}
         </div>
     );
 };
 
 export default ProductDetails;
+
