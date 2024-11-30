@@ -114,7 +114,27 @@ const clearCart = () => {
   }
 };
 
+const fetchOrders = () => {
+  try {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    return orders;
+  } catch (error) {
+    console.error('Error fetching orders from localStorage:', error);
+    return [];
+  }
+};
+const removeOrder = (orderId) => {
+  try {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const updatedOrders = orders.filter(order => order.id !== orderId);
+    localStorage.setItem('orders', JSON.stringify(updatedOrders));
+    return updatedOrders;
+  } catch (error) {
+    console.error('Error removing order from localStorage:', error);
+  }
+};
+
 
   
-  export default { fetchCart, addToCart, removeFromCart, deleteCart, updateCartQuantity,clearCart };
+  export default { fetchCart, addToCart, removeFromCart, deleteCart, updateCartQuantity,clearCart, removeOrder, fetchOrders };
   

@@ -62,7 +62,7 @@ const ProductDetails = () => {
 
 
     const handleGoToCart = () => {
-        navigate('/cart'); // Navigate to the cart page
+        navigate('/cart');
     };
     return (
         <div className="product-detail">

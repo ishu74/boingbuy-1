@@ -6,17 +6,19 @@ import {
   fetchCartSuccess, fetchCart,
   CLEAR_CART,
   CLEAR_CART_SUCCESS,
-  clearCartSuccess
+  clearCartSuccess,
+  FETCH_CART
 } from "../actions/cartaction";
+import { DELETE_ORDER_SUCCESS, deleteOrderSuccess, FETCH_ORDERS, FETCH_ORDERS_SUCCESS, fetchOrderSuccess } from "../actions/orderaction";
 
 // import { setLoading } from "../actions/uiAction";
 import * as uiActions from '../actions/uiAction'
 
 const fetchCartMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
-  if (action.type === 'FETCH_CART') {
+  if (action.type === FETCH_CART) {
     // debugger
     try {
-      debugger
+      // debugger
       dispatch(uiActions.setLoading(true))
       const cart = api.apiCart.fetchCart();
       dispatch(fetchCartSuccess(cart));
@@ -114,11 +116,42 @@ const clearCartMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) =>
 };
 
 
+const fetchOrdersMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
+  if (action.type === FETCH_ORDERS) {
+    try {
+      // debugger
+      const orders = api.apiCart.fetchOrders()
+      dispatch(fetchOrderSuccess(orders));
+    } catch (error) {
+      console.log('Error fetching orders from localStorage:', error);
+    }
+  }
+  next(action);
+};
+
+const removeOrderMiddleware = ({ api }) => ({ dispatch }) => (next) => (action) => {
+  if (action.type === 'REMOVE_ORDER') {
+    try {
+      api.apiCart.removeOrder()
+      dispatch(deleteOrderSuccess(action.payload ));
+    } catch (error) {
+      console.log('Error removing order from localStorage:', error);
+    }
+  }
+  next(action);
+};
+
+
+
+
+
 export default [
   fetchCartMiddleware,
   addToCartMiddleware,
   removeFromCartMiddleware,
   deleteCartMiddleware,
   updateCartQuantityMiddleware,
-  clearCartMiddleware
+  clearCartMiddleware,
+  fetchOrdersMiddleware,
+  removeOrderMiddleware
 ];

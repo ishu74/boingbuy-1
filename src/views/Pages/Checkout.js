@@ -12,7 +12,6 @@ const CheckoutPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   
-  // Form data and error states
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
@@ -28,7 +27,17 @@ const CheckoutPage = () => {
     addressError: '',
   });
 
- 
+  const generateOrderId = () => {
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const year = currentDate.getFullYear();
+    const randomNumber = Math.floor(Math.random() * 900) + 100; 
+    const orderId = `${day}${month}${year}${randomNumber}`;
+    return orderId;
+  };
+
+
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
 
@@ -137,12 +146,10 @@ const CheckoutPage = () => {
   };
 
 
-  // Calculate total price
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
   };
 
-  // Validate the form and submit the order
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -160,34 +167,25 @@ const CheckoutPage = () => {
       valid = false;
     }
 
-    // if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
-    //   newErrors.contactError = 'Please enter a valid 10-digit contact number.';
-    //   valid = false;
-    // }
+
 
     if (!formData.contact || !/^\d{10}$/.test(formData.contact)) {
       newErrors.contactError = 'Please enter a valid 10-digit contact number.';
       valid = false;
     }
 
-    // if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-    //   newErrors.emailError = 'Please enter a valid email address.';
-    //   valid = false;
-    // }
     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.emailError = 'Please enter a valid email address.';
       valid = false;
     }
     
-
     if (!formData.address) {
       newErrors.addressError = 'Please enter your shipping address.';
       valid = false;
     }
 
     setErrors(newErrors);
-
-    // If valid, proceed with order submission
+    const orderId = generateOrderId();
     if (valid) {
       if (!cart.length) {
         alert('Your cart is empty. Add items before checkout.');
@@ -195,7 +193,7 @@ const CheckoutPage = () => {
       }
 
       const order = {
-        id: Date.now(),
+        id:orderId,
         name: formData.name,
         contact: formData.contact,
         email: formData.email,

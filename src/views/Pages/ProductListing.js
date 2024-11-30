@@ -5,7 +5,6 @@ import { products } from "../../assets/product";
 import "../../App.css";
 import { ShimmerPostList } from "react-shimmer-effects";
 import CardShimmerLoader from "../_common/shimmer-card";
-// import { ShimmerPostList } from "shimmer-effects-react";
 
 const ProductListing = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -44,7 +43,7 @@ const ProductListing = () => {
   const finalFilteredData = filteredSubcategories.map((category) => {
     const subcategories = category.subcategories.map((subcategory) => {
       const products = subcategory.products.filter((product) => {
-        const matchesSearch = product.name
+        const matchesSearch = product.name 
           .toLowerCase()
           .includes(searchQuery.toLowerCase());
         return matchesSearch;
@@ -62,10 +61,9 @@ const ProductListing = () => {
     return { ...category, subcategories };
   });
 
-  // Simulate loading behavior
   useState(() => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500); // Simulates a 1.5s data fetch
+    setTimeout(() => setLoading(false), 1500); 
   }, []);
 
   return (
