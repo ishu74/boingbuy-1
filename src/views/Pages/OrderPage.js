@@ -99,7 +99,7 @@ const OrdersPage = () => {
                     </Button>
                   </td>
                   <td>${order.total}</td>
-                  <td>{order.isActive ? 'Confirmed' : 'Cancelled'}</td>
+                  <td>{order.isActive ?  'Cancelled' : 'Confirmed' }</td>
                   <td>
                     <Button
                       variant={order.isActive ? 'warning' : 'success'}
@@ -111,7 +111,7 @@ const OrdersPage = () => {
                       }}
                     >
                       {/* {order.isActive ? 'Deactivate' : 'Activate'} */}
-                      {order.isActive ? 'Cancel' : 'Confirm'}
+                      {order.isActive ? 'Confirm' :'Cancel' }
                     </Button>
                   </td>
                 </tr>

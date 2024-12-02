@@ -12,14 +12,15 @@ import { useDispatch } from 'react-redux';
 import Checkout from './views/Pages/Checkout';
 import OrderPage from './views/Pages/OrderPage';
 import { ToastContainer } from 'react-toastify';
+import { fetchOrderSuccess } from './application/actions/orderaction';
 
 function App() {
 const dispatch = useDispatch()
   useEffect(() => {
-    // const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    // dispatch(fetchCartSuccess(cart)); // Make sure cart data is stored in Redux
     const cart = fetchCartSuccess()
+    const order = fetchOrderSuccess()
     dispatch(fetchCart(cart))
+    dispatch(fetchOrderSuccess(order))
   }, [dispatch]);
   return (
     <div className="App">

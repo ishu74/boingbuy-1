@@ -207,7 +207,7 @@ const CheckoutPage = () => {
 
       const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
       localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
-      toast.success('Orders succes');
+      
 
       navigate("/orders")
 
@@ -236,7 +236,7 @@ const CheckoutPage = () => {
         address: '',
         paymentMethod: 'Credit Card',
       });
-      navigate("/orders")
+      // navigate("/orders")
     }
   };
 
