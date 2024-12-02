@@ -13,6 +13,7 @@ import Checkout from './views/Pages/Checkout';
 import OrderPage from './views/Pages/OrderPage';
 import { ToastContainer } from 'react-toastify';
 import { fetchOrderSuccess } from './application/actions/orderaction';
+import ConfirmationPage from './views/Pages/Confirmation';
 
 function App() {
 const dispatch = useDispatch()
@@ -34,6 +35,7 @@ const dispatch = useDispatch()
           <Route path="/cart" element={<Cart/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/orders" element={<OrderPage/>} />
+          <Route path="/confirmation" element={<ConfirmationPage/>} />
         </Routes>
       </Router>
     </div>

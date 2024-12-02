@@ -438,7 +438,7 @@ const CheckoutPage = () => {
       localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
       
 
-      // navigate("/orders")
+      navigate("/confirmation")
 
       toast.success(
         <div>
