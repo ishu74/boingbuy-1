@@ -116,8 +116,8 @@ const clearCart = () => {
 
 const fetchOrders = () => {
   try {
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    return orders;
+    const orders =localStorage.getItem('orders');
+    return  orders ? JSON.parse(orders) : [];
   } catch (error) {
     console.error('Error fetching orders from localStorage:', error);
     return [];

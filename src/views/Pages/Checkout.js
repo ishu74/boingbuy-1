@@ -143,6 +143,7 @@ const CheckoutPage = () => {
         contactError: 'Please enter valid 10 digit phone number' 
       });
     }
+ 
   };
 
 
@@ -188,7 +189,7 @@ const CheckoutPage = () => {
     const orderId = generateOrderId();
     if (valid) {
       if (!cart.length) {
-        alert('Your cart is empty. Add items before checkout.');
+        toast.info('Your cart is empty. Add items before checkout.');
         return;
       }
 
@@ -206,6 +207,8 @@ const CheckoutPage = () => {
 
       const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
       localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
+      toast.success('Orders succes');
+
       navigate("/orders")
 
       toast.success(

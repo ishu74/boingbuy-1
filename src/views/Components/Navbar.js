@@ -15,7 +15,7 @@ function NavBar() {
   const cart = useSelector(getCarts);
   const cartItemCount = cart.length;
   return (
-    <Navbar expand="lg" className="bg-body-tertiary sticky-top shadow" style={{ padding: '0.5rem 1rem' }}>
+    <Navbar expand="lg" className="bg-body-tertiary  shadow" style={{ padding: '0.5rem 1rem' }} sticky='top'>
       <Container fluid>
         {/* Logo and Brand */}
         <Navbar.Brand as={Link} to="/products" style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>

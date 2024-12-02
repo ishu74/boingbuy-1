@@ -11,7 +11,9 @@ const ProductListing = () => {
   const [subcategoryFilter, setSubcategoryFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   const handleCategoryChange = (e) => {
     setCategoryFilter(e.target.value);
@@ -46,7 +48,11 @@ const ProductListing = () => {
         const matchesSearch = product.name 
           .toLowerCase()
           .includes(searchQuery.toLowerCase());
-        return matchesSearch;
+        // return matchesSearch;
+        const matchesPrice = 
+        (minPrice === "" || product.price >= parseFloat(minPrice)) && // search buy price
+        (maxPrice === "" || product.price <= parseFloat(maxPrice));
+      return matchesSearch && matchesPrice;
       });
 
       products.sort((a, b) => {
@@ -61,15 +67,23 @@ const ProductListing = () => {
     return { ...category, subcategories };
   });
 
+
+  const handleMinPriceChange = (e) => {
+    setMinPrice(e.target.value);
+  };
+  const handleMaxPriceChange = (e) => {
+    setMaxPrice(e.target.value);
+  };
+
   useState(() => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500); 
+    setTimeout(() => setLoading(false), 1000); 
   }, []);
 
   return (
     <Container fluid className="listing-page">
       <Row>
-        <Col xs={12} md={4} lg={3} className="sidebar">
+        <Col xs={12} md={4} lg={3} className="sidebar ">
           <h4>Filters</h4>
 
           {/* Category Filter */}
@@ -121,6 +135,26 @@ const ProductListing = () => {
             />
           </Form.Group>
 
+            {/* Price Filter */}
+            <Form.Group controlId="priceFilter">
+            <Form.Label>Min Price</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Min price"
+              value={minPrice}
+              onChange={handleMinPriceChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="priceFilter">
+            <Form.Label>Max Price</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Max price"
+              value={maxPrice}
+              onChange={handleMaxPriceChange}
+            />
+          </Form.Group>
+
           {/* Sorting Filter */}
           <Form.Group controlId="sortOrder">
             <Form.Label>Sort by Price</Form.Label>
@@ -141,10 +175,10 @@ const ProductListing = () => {
           {!loading ? (
               finalFilteredData.map((category) => (
                 <div key={category.name} className="category-section">
-                  <h2 className="category-title">{category.name}</h2>
+                  <h2 className="category-title">{category?"":category.name}</h2>
                   {category.subcategories.map((subcategory) => (
                     <div key={subcategory.name} className="subcategory-section">
-                      <h3 className="subcategory-title">{subcategory.name}</h3>
+                      <h3 className="subcategory-title">{subcategory?"":subcategory.name}</h3>
                       <Row>
                         {subcategory.products.map((product, index) => (
                           <Col key={index} xs={6} sm={6} md={6} lg={6}>
@@ -160,6 +194,7 @@ const ProductListing = () => {
             <>
             {/* <ShimmerPostList postStyle="STYLE_FOUR" col={2} row={2} gap={40} style={{display :"flex"}} /> */}
             <CardShimmerLoader columnCount={2} rowCount={2} />
+            {/* <img src=""/> */}
  
             </>
           )}
