@@ -44,7 +44,7 @@
   position: sticky;
   top: 0; /* Keeps the sidebar at the top */
   height: 100vh; /* Full height */
-  overflow-y: auto; 
+  /* overflow-y: auto;  */
   padding: 20px;
   background-color: #f7f7f7;
   border-right: 1px solid #ddd;
@@ -61,7 +61,7 @@
 /* Product area - allowing scroll */
 .products {
   height: 100vh;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   padding: 20px;
   display: flex;
   flex-direction: column;

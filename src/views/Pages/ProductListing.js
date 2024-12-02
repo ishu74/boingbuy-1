@@ -5,6 +5,7 @@ import { products } from "../../assets/product";
 import "../../App.css";
 import { ShimmerPostList } from "react-shimmer-effects";
 import CardShimmerLoader from "../_common/shimmer-card";
+import BoingBuyLoader from "../_common/BoingBuyLoader";
 
 const ProductListing = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -193,7 +194,8 @@ const ProductListing = () => {
           ) : (
             <>
             {/* <ShimmerPostList postStyle="STYLE_FOUR" col={2} row={2} gap={40} style={{display :"flex"}} /> */}
-            <CardShimmerLoader columnCount={2} rowCount={2} />
+            {/* <CardShimmerLoader columnCount={2} rowCount={2} /> */}
+            <BoingBuyLoader/>
             {/* <img src=""/> */}
  
             </>

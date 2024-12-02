@@ -99,29 +99,253 @@ const CheckoutPage = () => {
     if (name === 'name') {
       setErrors({
         ...errors,
-        nameError: '', // Clear name error when user types in the 'name' field
+        nameError: '', 
       });
     }
   
-    if (name === 'email') {
-      // Updated email validation regex: Only one dot allowed after @
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z0-9-.]+$/;
-      const afterAt = value.split('@')[1];
-      const dotCountAfterAt = afterAt ? afterAt.split('.').length - 1 : 0;
+    // if (name === 'email') {
+    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z0-9-.]+$/;
+    //   const afterAt = value.split('@')[1];
+    //   const dotCountAfterAt = afterAt ? afterAt.split('.').length - 1 : 0;
   
-      // Check if there's more than one dot after '@'
-      if (emailRegex.test(value) && dotCountAfterAt <= 1) {
+    //   if (emailRegex.test(value) && dotCountAfterAt <= 1) {
+    //     setErrors({
+    //       ...errors,
+    //       emailError: '',
+    //     });
+    //   } else {
+    //     setErrors({
+    //       ...errors,
+    //       emailError: 'Email format is not proper !',
+    //     });
+    //   }
+    // }
+
+
+    // if (name === 'email') {
+    //   const emailRegex = /^[^\s@]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    
+    //   if (emailRegex.test(value)) {
+    //     // Split after @ and check domain validity
+    //     const afterAt = value.split('@')[1];
+    //     const dotCountAfterAt = afterAt.split('.').length - 1;
+    
+    //     if (!afterAt.startsWith('.') && !afterAt.endsWith('.') && !afterAt.includes('..')) {
+    //       setErrors({
+    //         ...errors,
+    //         emailError: '',
+    //       });
+    //     } else {
+    //       setErrors({
+    //         ...errors,
+    //         emailError: 'Email format is not proper!',
+    //       });
+    //     }
+    //   } else {
+    //     setErrors({
+    //       ...errors,
+    //       emailError: 'Email format is not proper!',
+    //     });
+    //   }
+    // }
+
+  // if (name === 'email') {
+  //   // Regex to check for valid email format
+  //   const emailRegex = /^[^\s@]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  
+  //   // Check if the email format matches the regex
+  //   if (emailRegex.test(value)) {
+  //     const [username, domain] = value.split('@');
+  //     const domainParts = domain.split('.');
+  
+  //     // Check if the username or domain contain invalid characters
+  //     const invalidCharsRegex = /[#\$\!\^&\*()]/;
+  //     if (invalidCharsRegex.test(username) || invalidCharsRegex.test(domain)) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Email contains invalid special characters!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check for hyphen at the beginning or end of the domain or subdomain
+  //     if (domain.startsWith('-') || domain.endsWith('-')) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Domain cannot start or end with a hyphen!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check for multiple consecutive dots in the domain
+  //     if (domain.includes('..')) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Domain cannot contain consecutive dots!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check for multiple dots after the @
+  //     const afterAt = domain.split('.')[1];
+  //     const dotCountAfterAt = afterAt ? afterAt.split('.').length - 1 : 0;
+  
+  //     // If everything passes
+  //     setErrors({
+  //       ...errors,
+  //       emailError: '',
+  //     });
+  //   } else {
+  //     setErrors({
+  //       ...errors,
+  //       emailError: 'Email format is not proper!',
+  //     });
+  //   }
+  // }
+
+  // if (name === 'email') {
+  //   // Regex to check for basic valid email format (without invalid characters or domain checks)
+  //   const emailRegex = /^[^\s@]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  
+  //   // Check if the email format matches the regex
+  //   if (emailRegex.test(value)) {
+  //     const [username, domain] = value.split('@');
+  //     const domainParts = domain.split('.');
+  
+  //     // Check if the username or domain contain invalid characters
+  //     const invalidCharsRegex = /[#\$\!\^&\*()]/;
+  //     if (invalidCharsRegex.test(username) || invalidCharsRegex.test(domain)) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Email contains invalid special characters!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check for hyphen at the beginning or end of the domain or subdomain
+  //     if (domain.startsWith('-') || domain.endsWith('-')) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Domain cannot start or end with a hyphen!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check for multiple consecutive dots in the domain
+  //     if (domain.includes('..')) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Domain cannot contain consecutive dots!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check if the domain extension starts with a digit
+  //     const domainExtension = domainParts[domainParts.length - 1];
+  //     if (/^\d/.test(domainExtension)) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Domain extension cannot start with a digit!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check if there are digits directly after the dot in the domain part
+  //     if (domain.split('.').some(part => /^\d/.test(part))) {
+  //       setErrors({
+  //         ...errors,
+  //         emailError: 'Domain parts cannot start with a digit after the dot!',
+  //       });
+  //       return;
+  //     }
+  
+  //     // Check for multiple dots after the @
+  //     const afterAt = domain.split('.')[1];
+  //     const dotCountAfterAt = afterAt ? afterAt.split('.').length - 1 : 0;
+  
+  //     // If everything passes, reset the email error
+  //     setErrors({
+  //       ...errors,
+  //       emailError: '',
+  //     });
+  //   } else {
+  //     setErrors({
+  //       ...errors,
+  //       emailError: 'Email format is not proper!',
+  //     });
+  //   }
+  // }
+  
+  if (name === 'email') {
+    const emailRegex = /^[^\s@]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  
+    if (emailRegex.test(value)) {
+      const [username, domain] = value.split('@');
+      const domainParts = domain.split('.');
+  
+      const invalidCharsRegex = /[#\$\!\^&\*()]/;
+      if (invalidCharsRegex.test(username) || invalidCharsRegex.test(domain)) {
         setErrors({
           ...errors,
-          emailError: '', // Clear email error if valid
+          emailError: 'Email contains invalid special characters!',
         });
-      } else {
-        setErrors({
-          ...errors,
-          emailError: 'Email format is not proper. Only one dot is allowed after "@"',
-        });
+        return;
       }
+  
+      if (domain.startsWith('-') || domain.endsWith('-')) {
+        setErrors({
+          ...errors,
+          emailError: 'Domain cannot start or end with a hyphen!',
+        });
+        return;
+      }
+  
+      if (domain.includes('..')) {
+        setErrors({
+          ...errors,
+          emailError: 'Domain cannot contain consecutive dots!',
+        });
+        return;
+      }
+  
+      const domainExtension = domainParts[domainParts.length - 1];
+      if (/^\d/.test(domainExtension)) {
+        setErrors({
+          ...errors,
+          emailError: 'Domain extension cannot start with a digit!',
+        });
+        return;
+      }
+  
+      if (domainParts.some(part => /^\d/.test(part) && part !== domainExtension)) {
+        setErrors({
+          ...errors,
+          emailError: 'Domain parts cannot start with a digit after the dot!',
+        });
+        return;
+      }
+  
+      if (/\d$/.test(domainExtension)) {
+        setErrors({
+          ...errors,
+          emailError: 'Domain extension cannot end with a digit!',
+        });
+        return;
+      }
+  
+      setErrors({
+        ...errors,
+        emailError: '',
+      });
+    } else {
+      setErrors({
+        ...errors,
+        emailError: 'Email format is not proper!',
+      });
     }
+  }
+  
+    
   };
   
   
@@ -138,9 +362,14 @@ const CheckoutPage = () => {
         contactError: ''
       })
     }else{
+      
       setErrors({
         ...errors,
-        contactError: 'Please enter valid 10 digit phone number' 
+        contactError: 'Please enter valid only 10 digit phone number' 
+      });
+      setErrors({
+        ...errors,
+        contactError: '' 
       });
     }
  
@@ -209,7 +438,7 @@ const CheckoutPage = () => {
       localStorage.setItem('orders', JSON.stringify([...existingOrders, order]));
       
 
-      navigate("/orders")
+      // navigate("/orders")
 
       toast.success(
         <div>
@@ -227,7 +456,7 @@ const CheckoutPage = () => {
           progress: undefined,
         }
       );
-
+//  navigate("/orders")
       dispatch(clearCart());
       setFormData({
         name: '',
@@ -237,8 +466,10 @@ const CheckoutPage = () => {
         paymentMethod: 'Credit Card',
       });
       // navigate("/orders")
+     
     }
   };
+ 
 
   return (
     <Container className="mt-5">

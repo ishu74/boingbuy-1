@@ -111,7 +111,7 @@ const OrdersPage = () => {
                       }}
                     >
                       {/* {order.isActive ? 'Deactivate' : 'Activate'} */}
-                      {order.isActive ? 'Confirm' :'Cancel' }
+                      {order.isActive ? 'Confirm' : 'Cancel' }
                     </Button>
                   </td>
                 </tr>
